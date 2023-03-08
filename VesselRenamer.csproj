@@ -20,7 +20,7 @@
     <Exec Command="echo Conf $(Configuration)&#xD;&#xA;echo Output $(OutDir)&#xD;&#xA;echo ProjectDir $(ProjectDir)&#xD;&#xA;echo AssemblyName $(AssemblyName)" />
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(OutDir)$(AssemblyName).dll&quot; &quot;$(ProjectDir)vessel_renamer\$(AssemblyName).dll&quot;" />
+    <Exec Command="copy /Y &quot;$(OutDir)$(AssemblyName).dll&quot; &quot;$(ProjectDir)vessel_renamer\$(AssemblyName).dll&quot;&#xD;&#xA;echo Copied &quot;$(OutDir)$(AssemblyName).dll&quot; to &quot;$(ProjectDir)vessel_renamer\$(AssemblyName).dll&quot;" />
   </Target>
 
 </Project>
