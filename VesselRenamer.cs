@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace VesselRenamer
 {
-    [BepInPlugin("com.github.ColinZeidler.VesselRenamer", "VesselRenamer", "0.1.0")]
+    [BepInPlugin("com.github.ColinZeidler.VesselRenamer", "VesselRenamer", "1.1.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class VesselRenamerMod : BaseSpaceWarpPlugin
     {
