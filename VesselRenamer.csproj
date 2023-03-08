@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="..\external_dlls\SpaceWarp.dll" />
+    <Reference Include="..\external_dlls\UnityEngine.dll" />
+    <Reference Include="..\external_dlls\UnityEngine.IMGUIModule.dll" />
+    <Reference Include="..\external_dlls\UnityEngine.CoreModule.dll" />
+    <Reference Include="..\external_dlls\Assembly-CSharp.dll" />
+    <Reference Include="..\external_dlls\Assembly-CSharp-firstpass.dll" />
+    <Reference Include="..\external_dlls\NewtonSoft.Json.dll" />
+    <Reference Include="..\external_dlls\NewtonSoft.Json.dll" />
+    <Reference Include="..\external_dlls\UnityEngine.InputLegacyModule.dll" />
+    <Reference Include="..\external_dlls\BepInEx.dll" />
+
+  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="echo Conf $(Configuration)&#xD;&#xA;echo Output $(OutDir)&#xD;&#xA;echo ProjectDir $(ProjectDir)&#xD;&#xA;echo AssemblyName $(AssemblyName)" />
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(OutDir)$(AssemblyName).dll&quot; &quot;$(ProjectDir)vessel_renamer\$(AssemblyName).dll&quot;" />
+  </Target>
+
+</Project>

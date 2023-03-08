@@ -1,0 +1,13 @@
+{
+  "mod_id": "VesselRenamer",
+  "name": "Vessel Renamer",
+  "author": "Strykker2",
+  "description": "Plugin to allow renaming of current spacecraft.",
+  "source": "",
+  "version": "0.1.0",
+  "dependencies": [],
+  "ksp2_version": {
+    "min": "0.1.0",
+    "max": "*"
+  }
+}
