@@ -1,10 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using KSP;
 using KSP.Game;
 using KSP.Sim.impl;
 using KSP.UI.Binding;
-using MoonSharp.VsCodeDebugger.SDK;
 using SpaceWarp;
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
@@ -22,6 +20,12 @@ namespace VesselRenamer
         private ManualLogSource logger = null;
         private Rect windowRect;
         private string newName = "";
+        private bool gameInputState = true;
+
+        private GameInstance game = null;
+
+        public readonly string vesselNameInput = "VesselRenamer.Input";
+
 
         private int width = 300;
         private int height = 100;
@@ -29,6 +33,7 @@ namespace VesselRenamer
         public override void OnInitialized()
         {
             base.OnInitialized();
+            game = GameManager.Instance.Game;
 
             logger = BepInEx.Logging.Logger.CreateLogSource("com.github.ColinZeidler.VesselRenamer");
 
@@ -43,7 +48,7 @@ namespace VesselRenamer
         void ToggleButton(bool toggle)
         {
             showGui = toggle;
-            GameObject.Find("BTN-ReV")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
+            //GameObject.Find("BTN-ReV")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
         }
 
         void Awake()
@@ -65,13 +70,31 @@ namespace VesselRenamer
                     GUILayout.Height(height),
                     GUILayout.Width(width));
 
+                if (gameInputState && GUI.GetNameOfFocusedControl().Equals(vesselNameInput))
+                {
+                    gameInputState = false;
+                    game.Input.Disable();
+                }
+
+                if (!gameInputState && !GUI.GetNameOfFocusedControl().Equals(vesselNameInput))
+                {
+                    gameInputState=true;
+                    game.Input.Enable();
+                }
+
+            } else
+            {
+                if (!gameInputState)
+                {
+                    gameInputState = true;
+                    game.Input.Enable();
+                }
             }
 
         }
 
         private void PopulateGui(int WindowID)
         {
-            GameInstance game = GameManager.Instance.Game;
             VesselComponent vessel = game.ViewController.GetActiveVehicle(true)?.GetSimVessel(true);
 
             GUILayout.BeginVertical();
@@ -84,13 +107,21 @@ namespace VesselRenamer
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("New name:");
+            GUI.SetNextControlName(vesselNameInput);
             newName = GUILayout.TextField(newName);
             GUILayout.EndHorizontal();
 
             if (GUILayout.Button("Rename") && newName != "")
             {
                 vessel.SimulationObject.Name = newName;
+                // Doesn't trigger an immediate update for everything. (Breadcrumbs, map view gets stuck sometimes (UI button to return to ship works 'M' doesn't))
             }
+
+            // Indication to User that its safe to type, or why vessel controls aren't working
+            GUILayout.BeginHorizontal();
+            string inputStateString = gameInputState ? "Enabled" : "Disabled";
+            GUILayout.Label($"Game Input: {inputStateString}");
+            GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
 
