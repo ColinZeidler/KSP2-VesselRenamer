@@ -2,7 +2,6 @@
 using BepInEx.Logging;
 using KSP.Game;
 using KSP.Sim.impl;
-using KSP.UI.Binding;
 using SpaceWarp;
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
@@ -12,7 +11,7 @@ using UnityEngine;
 
 namespace VesselRenamer
 {
-    [BepInPlugin("com.github.ColinZeidler.VesselRenamer", "VesselRenamer", "1.1.0")]
+    [BepInPlugin("com.github.ColinZeidler.VesselRenamer", "VesselRenamer", "1.1.1")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class VesselRenamerMod : BaseSpaceWarpPlugin
     {
@@ -48,7 +47,6 @@ namespace VesselRenamer
         void ToggleButton(bool toggle)
         {
             showGui = toggle;
-            //GameObject.Find("BTN-ReV")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
         }
 
         void Awake()
@@ -73,13 +71,13 @@ namespace VesselRenamer
                 if (gameInputState && GUI.GetNameOfFocusedControl().Equals(vesselNameInput))
                 {
                     gameInputState = false;
-                    game.Input.Disable();
+                    game.Input.Flight.Disable();
                 }
 
                 if (!gameInputState && !GUI.GetNameOfFocusedControl().Equals(vesselNameInput))
                 {
                     gameInputState=true;
-                    game.Input.Enable();
+                    game.Input.Flight.Enable();
                 }
 
             } else
@@ -87,7 +85,7 @@ namespace VesselRenamer
                 if (!gameInputState)
                 {
                     gameInputState = true;
-                    game.Input.Enable();
+                    game.Input.Flight.Enable();
                 }
             }
 
@@ -114,7 +112,7 @@ namespace VesselRenamer
             if (GUILayout.Button("Rename") && newName != "")
             {
                 vessel.SimulationObject.Name = newName;
-                // Doesn't trigger an immediate update for everything. (Breadcrumbs, map view gets stuck sometimes (UI button to return to ship works 'M' doesn't))
+                // Doesn't trigger an immediate update for everything. (Breadcrumbs)
             }
 
             // Indication to User that its safe to type, or why vessel controls aren't working

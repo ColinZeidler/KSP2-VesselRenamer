@@ -4,7 +4,7 @@
   "author": "Strykker2",
   "description": "Plugin to allow renaming of current spacecraft.",
   "source": "",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "dependencies": [],
   "ksp2_version": {
     "min": "0.1.0",

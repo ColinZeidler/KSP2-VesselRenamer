@@ -10,7 +10,6 @@ Download the latest release from https://github.com/ColinZeidler/KSP2-VesselRena
 Extract and copy the vessel_renamer directory into your "Kerbal Space Program 2\BepInEx\plugins" directory
 
 ## Issues
- - Can get stuck in the Map view after changing vessel name, Using the UI button near bottom center to "Fly" will return you to your ship and the Map hotkey will start working again.
 
  Please report any discovered issues at https://github.com/ColinZeidler/KSP2-VesselRenamer/issues
 
