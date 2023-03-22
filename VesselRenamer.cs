@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using KSP.Game;
 using KSP.Sim.impl;
+using KSP.UI.Binding;
 using SpaceWarp;
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
@@ -11,13 +12,14 @@ using UnityEngine;
 
 namespace VesselRenamer
 {
-    [BepInPlugin("com.github.ColinZeidler.VesselRenamer", "VesselRenamer", "1.1.1")]
+    [BepInPlugin("com.github.ColinZeidler.VesselRenamer", "VesselRenamer", "1.2.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class VesselRenamerMod : BaseSpaceWarpPlugin
     {
         private bool showGui = false;
         private ManualLogSource logger = null;
         private Rect windowRect;
+
         private string newName = "";
         private bool gameInputState = true;
 
@@ -47,6 +49,7 @@ namespace VesselRenamer
         void ToggleButton(bool toggle)
         {
             showGui = toggle;
+            GameObject.Find("BTN-ReV")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
         }
 
         void Awake()
@@ -59,6 +62,7 @@ namespace VesselRenamer
         {
             if (showGui)
             {
+
                 GUI.skin = Skins.ConsoleSkin;
                 windowRect = GUILayout.Window(
                     GUIUtility.GetControlID(FocusType.Passive),
@@ -94,6 +98,24 @@ namespace VesselRenamer
         private void PopulateGui(int WindowID)
         {
             VesselComponent vessel = game.ViewController.GetActiveVehicle(true)?.GetSimVessel(true);
+
+            GUILayout.BeginVertical();
+            var exitRect = new Rect(windowRect.width - 18, 2, 16, 16);
+            string exitFont = "<size=8>x</size>";
+            if (exitRect.Contains(Event.current.mousePosition))
+            {
+                exitFont = "<color=red><size=8>x</size></color>";
+            }
+
+            if (GUI.Button(exitRect, exitFont))
+            {
+                if (showGui)
+                {
+                    ToggleButton(false);
+                }
+            }
+            GUILayout.EndVertical();
+
 
             GUILayout.BeginVertical();
 
